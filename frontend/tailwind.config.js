@@ -3,7 +3,9 @@ module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {
-      fontFamily: {}
+      fontFamily: {
+        'roboto': ['roboto', 'sans-serif']
+      }
     },
   },
   plugins: [],
