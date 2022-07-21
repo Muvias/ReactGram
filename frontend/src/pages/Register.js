@@ -1,11 +1,19 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { register, reset } from "../slices/authSlice";
+import { Message } from "../components/Message";
 
 export function Register() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    const dispatch = useDispatch();
+
+    const { loading, error } = useSelector((state) => state.auth);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -17,8 +25,12 @@ export function Register() {
             confirmPassword
         };
 
-        console.log(user);
+        dispatch(register(user));
     };
+
+    useEffect(() => {
+        dispatch(reset());
+    }, [dispatch]);
 
     return (
         <div className="max-w-[33%] py-[1.5em] px-[2em] my-[2em] mx-auto border border-solid border-[#363636] bg-black">
@@ -61,11 +73,22 @@ export function Register() {
                     className="py-[10px] px-[8px] rounded-sm border-solid bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
                 />
 
-                <input
-                    type="submit"
-                    value="Cadastrar"
-                    className="py-[10px] px-[8px] mt-4 text-[1em] rounded-[4px] font-bold opacity-[0.8] text-[#FFF] bg-[#0094f6] border-[#555] cursor-pointer hover:opacity-[1] transition-all disabled:cursor-not-allowed disabled:bg-black"
-                />
+                {!loading &&
+                    <input
+                        type="submit"
+                        value="Cadastrar"
+                        className="py-[10px] px-[8px] mt-4 text-[1em] rounded-[4px] font-bold opacity-[0.8] text-[#FFF] bg-[#0094f6] cursor-pointer hover:opacity-[1] transition-all"
+                    />
+                }
+                {loading &&
+                    <input
+                        type="submit"
+                        value="Aguarde"
+                        className="py-[10px] px-[8px] mt-4 text-[1em] rounded-[4px] font-bold opacity-[0.8] text-[#FFF] border border-[#555] disabled:cursor-not-allowed disabled:bg-black"
+                        disabled
+                    />
+                }
+                {error && <Message msg={error} type="error" />}
 
             </form>
             <p  className="text-center">
