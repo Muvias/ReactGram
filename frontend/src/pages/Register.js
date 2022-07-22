@@ -34,7 +34,7 @@ export function Register() {
 
     return (
         <div className="max-w-[33%] py-[1.5em] px-[2em] my-[2em] mx-auto border border-solid border-[#363636] bg-black">
-            <h2 className="text-center text-[2.1em]">ReactGram</h2>
+            <h1 className="text-center text-[2.1em]">ReactGram</h1>
             <p className="font-bold text-[#999] mb-[1.5em] text-center">Cadastre-se para ver as fotos dos seus amigos.</p>
             <form
                 onSubmit={handleSubmit}
