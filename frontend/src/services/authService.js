@@ -18,8 +18,13 @@ async function register(data) {
     };
 };
 
+function logout() {
+    localStorage.removeItem("user");
+};
+
 const authService = {
     register,
+    logout,
 };
 
 export default authService;
