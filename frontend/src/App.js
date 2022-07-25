@@ -8,6 +8,7 @@ import { Navbar } from './components/Navbar';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
+import { EditProfile } from './pages/EditProfile';
 
 function App() {
   const { auth, loading } = useAuth();
@@ -25,6 +26,7 @@ function App() {
             <Route path='/' element={ auth ? <Home /> : <Navigate to="/login" /> } />
             <Route path='/login' element={ !auth ? <Login /> : <Navigate to="/" /> } />
             <Route path='/register' element={ !auth ? <Register /> : <Navigate to="/" /> } />
+            <Route path='/profile' element={ auth ? <EditProfile /> : <Navigate to="/login" /> } />
           </Routes>
         </div>
         <Footer />

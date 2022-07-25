@@ -18,6 +18,23 @@ async function register(data) {
     };
 };
 
+async function login(data) {
+    const config = requestConfig("POST", data);
+
+    try {
+        const res = await fetch(api + "/users/login", config).then((res) => res.json()).catch((err) => err);
+
+        if (res._id) {
+            localStorage.setItem("user", JSON.stringify(res));
+        };
+
+        return res;
+    } catch (err) {
+        console.log(err);
+    };
+
+};
+
 function logout() {
     localStorage.removeItem("user");
 };
@@ -25,6 +42,7 @@ function logout() {
 const authService = {
     register,
     logout,
+    login,
 };
 
 export default authService;

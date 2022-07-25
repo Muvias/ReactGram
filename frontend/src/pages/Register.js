@@ -33,7 +33,7 @@ export function Register() {
     }, [dispatch]);
 
     return (
-        <div className="max-w-[33%] py-[1.5em] px-[2em] my-[2em] mx-auto border border-solid border-[#363636] bg-black">
+        <div className="max-w-[33%] py-[1.5em] px-[2em] my-[2em] mx-auto border border-[#363636] bg-black">
             <h1 className="text-center text-[2.1em]">ReactGram</h1>
             <p className="font-bold text-[#999] mb-[1.5em] text-center">Cadastre-se para ver as fotos dos seus amigos.</p>
             <form
@@ -46,7 +46,7 @@ export function Register() {
                     placeholder="Nome"
                     onChange={(e) => setName(e.target.value)}
                     value={name}
-                    className="py-[10px] px-[8px] rounded-sm border-solid bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
+                    className="py-[10px] px-[8px] rounded-sm border bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
                 />
 
                 <input
@@ -54,7 +54,7 @@ export function Register() {
                     placeholder="Email"
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
-                    className="py-[10px] px-[8px] rounded-sm border-solid bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
+                    className="py-[10px] px-[8px] rounded-sm border bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
                 />
 
                 <input
@@ -62,7 +62,7 @@ export function Register() {
                     placeholder="Senha"
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
-                    className="py-[10px] px-[8px] rounded-sm border-solid bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
+                    className="py-[10px] px-[8px] rounded-sm border bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
                 />
 
                 <input
@@ -70,7 +70,7 @@ export function Register() {
                     placeholder="Confirme sua senha"
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     value={confirmPassword}
-                    className="py-[10px] px-[8px] rounded-sm border-solid bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
+                    className="py-[10px] px-[8px] rounded-sm border bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
                 />
 
                 {!loading &&
