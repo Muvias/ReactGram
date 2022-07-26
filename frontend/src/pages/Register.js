@@ -45,7 +45,7 @@ export function Register() {
                     type="text"
                     placeholder="Nome"
                     onChange={(e) => setName(e.target.value)}
-                    value={name}
+                    value={name || ""}
                     className="py-[10px] px-[8px] rounded-sm border bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
                 />
 
@@ -53,7 +53,7 @@ export function Register() {
                     type="email"
                     placeholder="Email"
                     onChange={(e) => setEmail(e.target.value)}
-                    value={email}
+                    value={email || ""}
                     className="py-[10px] px-[8px] rounded-sm border bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
                 />
 
@@ -61,7 +61,7 @@ export function Register() {
                     type="password"
                     placeholder="Senha"
                     onChange={(e) => setPassword(e.target.value)}
-                    value={password}
+                    value={password || ""}
                     className="py-[10px] px-[8px] rounded-sm border bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
                 />
 
@@ -69,7 +69,7 @@ export function Register() {
                     type="password"
                     placeholder="Confirme sua senha"
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    value={confirmPassword}
+                    value={confirmPassword || ""}
                     className="py-[10px] px-[8px] rounded-sm border bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
                 />
 

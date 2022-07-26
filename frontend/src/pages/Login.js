@@ -41,14 +41,14 @@ export function Login() {
                     type="text"
                     placeholder="Email"
                     onChange={(e) => setEmail(e.target.value)}
-                    value={email}
+                    value={email || ""}
                     className="py-[10px] px-[8px] rounded-sm border bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
                 />
                 <input
                     type="password"
                     placeholder="Senha"
                     onChange={(e) => setPassword(e.target.value)}
-                    value={password}
+                    value={password || ""}
                     className="py-[10px] px-[8px] rounded-sm border bg-[#3b3b3b] border-[#555] placeholder:text-[#AAA]"
                 />
 
