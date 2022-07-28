@@ -9,7 +9,7 @@ import { Message } from "../components/Message";
 import { uploads } from "../utils/config";
 
 import { getUserDetails } from "../slices/userSlice";
-import { publishPhoto, resetMessage } from "../slices/photoSlice";
+import { publishPhoto, resetMessage, getUserPhotos, deletePhoto } from "../slices/photoSlice";
 
 export function Profile() {
     const { id } = useParams();
@@ -26,8 +26,15 @@ export function Profile() {
     const [title, setTitle] = useState("");
     const [image, setImage] = useState("");
 
+    function resetComponentMessage() {    
+        setTimeout(() => {
+            dispatch(resetMessage())
+        }, 3000);
+    }
+
     useEffect(() => {
         dispatch(getUserDetails(id));
+        dispatch(getUserPhotos(id));
     }, [dispatch, id]);
 
     if (loading) {
@@ -52,15 +59,18 @@ export function Profile() {
 
         setTitle("");
 
-        setTimeout(() => {
-            dispatch(resetMessage())
-        }, 3000);
     };
 
     function handleFile(e) {
         const image = e.target.files[0];
 
         setImage(image);
+    };
+
+    function handleDelete(id) {
+        dispatch(deletePhoto(id));
+
+
     };
 
     return (
@@ -131,6 +141,42 @@ export function Profile() {
                     </form>
                 </div>
             )}
+
+            <div className="p-1 border border-[#363636]">
+                <h2>Fotos publicadas:</h2>
+                <div className="flex flex-wrap">
+                    {photos && photos.map((photo) => (
+                        <div
+                            key={photo._id}
+                            className="w-[32%] m-[0.3%]"
+                        >
+                            {photo.image && (
+                                <img
+                                    src={`${uploads}/photos/${photo.image}`}
+                                    alt={photo.title}
+                                    className="w-[100%]"
+                                />
+                            )}
+                            {id === userAuth._id ? (
+                                <div className="flex justify-around p-[10px]">
+                                    <Link to={`/photos/${photo._id}`}>
+                                        <BsFillEyeFill />
+                                    </Link>
+                                    <BsPencilFill className="cursor-pointer" />
+                                    <BsXLg
+                                        onClick={() => handleDelete(photo._id)}
+                                        className="cursor-pointer"
+                                    />
+                                </div>
+                            ) : (
+                                <Link to={`/photos/${photo._id}`}>Ver</Link>
+                            )}
+                        </div>
+                    ))}
+
+                    {photos.length === 0 && <p>Ainda não há fotos publicadas</p>}
+                </div>
+            </div>
         </div>
     );
 };
