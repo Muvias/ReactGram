@@ -9,7 +9,7 @@ import { Message } from "../components/Message";
 import { uploads } from "../utils/config";
 
 import { getUserDetails } from "../slices/userSlice";
-import { publishPhoto, resetMessage, getUserPhotos, deletePhoto } from "../slices/photoSlice";
+import { publishPhoto, resetMessage, getUserPhotos, deletePhoto, updatePhoto } from "../slices/photoSlice";
 
 export function Profile() {
     const { id } = useParams();
@@ -26,11 +26,15 @@ export function Profile() {
     const [title, setTitle] = useState("");
     const [image, setImage] = useState("");
 
+    const [editId, setEditId] = useState("");
+    const [editImage, setEditImage] = useState("");
+    const [editTitle, setEditTitle] = useState("");
+
     function resetComponentMessage() {    
         setTimeout(() => {
             dispatch(resetMessage())
         }, 3000);
-    }
+    };
 
     useEffect(() => {
         dispatch(getUserDetails(id));
@@ -59,6 +63,7 @@ export function Profile() {
 
         setTitle("");
 
+        resetComponentMessage();
     };
 
     function handleFile(e) {
@@ -70,7 +75,39 @@ export function Profile() {
     function handleDelete(id) {
         dispatch(deletePhoto(id));
 
+        resetComponentMessage();
+    };
 
+    function hideOrShowForms() {
+        newPhotoForm.current.classList.toggle("hidden")
+        editPhotoForm.current.classList.toggle("hidden")
+    };
+
+    function handleEdit(photo) {
+        if (editPhotoForm.current.classList.contains("hidden")) {
+            hideOrShowForms();
+        };
+
+        setEditId(photo._id);
+        setEditTitle(photo.title);
+        setEditImage(photo.image);
+
+    };
+
+    function handleUpdate(e) {
+        e.preventDefault();
+
+        const photoData = {
+            title: editTitle,
+            id: editId
+        };
+
+        dispatch(updatePhoto(photoData));
+        resetComponentMessage();
+    };
+
+    function handleCancelEdit(e) {
+        hideOrShowForms();
     };
 
     return (
@@ -89,57 +126,87 @@ export function Profile() {
                 </div>
             </div>
             {id === userAuth._id && (
-                <div
-                    ref={newPhotoForm}
-                    className="py-[1.5em] px-[2em] my-[2em] mx-auto border border-[#363636] bg-black"
-                >
-                    <h2 className="font-bold text-[1.8em] mb-4">Compartilhe algum momento seu</h2>
-                    <form
-                        onSubmit={handleSubmit}
-                        className="flex flex-col w-[100%] pb-[1.5em] mb-[1.5em] gap-[0.6em] border-b border-[#363636]"
+                <>
+                    <div
+                        ref={newPhotoForm}
+                        className="py-[1.5em] px-[2em] my-[2em] mx-auto border border-[#363636] bg-black"
                     >
-                        <label className="flex flex-col mb-2 gap-[0.6em]">
-                            <span>Título para a foto:</span>
+                        <h2 className="font-bold text-[1.8em] mb-4">Compartilhe algum momento seu</h2>
+                        <form
+                            onSubmit={handleSubmit}
+                            className="flex flex-col w-[100%] pb-[1.5em] mb-[1.5em] gap-[0.6em] border-b border-[#363636]"
+                        >
+                            <label className="flex flex-col mb-2 gap-[0.6em]">
+                                <span>Título para a foto:</span>
+                                <input
+                                    type="text"
+                                    placeholder="Insira um título"
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    value={title || ""}
+                                    className="py-[10px] px-[8px] rounded-sm bg-[#3b3b3b] border border-[#555] placeholder:text-[#AAA]"
+                                />
+                            </label>
+
+                            <label className="flex flex-col mb-2 gap-[0.6em]">
+                                <span>Imagem:</span>
+                                <input
+                                    type="file"
+                                    onChange={handleFile}
+                                    className="py-[10px] px-[8px] rounded-sm bg-[#3b3b3b] border border-[#555] text-[#AAA]"
+                                />
+                            </label>
+
+                            {!photoLoading &&                
+                                <input
+                                    type="submit"
+                                    value="Postar"
+                                    className="py-[10px] px-[8px] mt-4 text-[1em] rounded-[4px] font-bold opacity-[0.8] text-[#FFF] bg-[#0094f6] cursor-pointer hover:opacity-[1] transition-all"
+                                />
+                            }
+                            
+                            {photoLoading &&
+                                <input
+                                    type="submit"
+                                    value="Aguarde..."
+                                    className="py-[10px] px-[8px] mt-4 text-[1em] rounded-[4px] font-bold opacity-[0.8] text-[#FFF] border border-[#555] disabled:cursor-not-allowed disabled:bg-black"
+                                    disabled
+                                />
+                            }
+                        </form>
+                    </div>
+
+                    <div className="hidden" ref={editPhotoForm}>
+                        <p>Editando:</p>
+                        {editImage && (
+                            <img src={`${uploads}/photos/${editImage}`} alt={editTitle} />
+                        )}
+                         <form
+                            onSubmit={handleUpdate}
+                            className="flex flex-col w-[100%] pb-[1.5em] mb-[1.5em] gap-[0.6em] border-b border-[#363636]"
+                        >
+
                             <input
                                 type="text"
-                                placeholder="Insira um título"
-                                onChange={(e) => setTitle(e.target.value)}
-                                value={title || ""}
+                                placeholder="Insira um novo título"
+                                onChange={(e) => setEditTitle(e.target.value)}
+                                value={editTitle || ""}
                                 className="py-[10px] px-[8px] rounded-sm bg-[#3b3b3b] border border-[#555] placeholder:text-[#AAA]"
                             />
-                        </label>
 
-                        <label className="flex flex-col mb-2 gap-[0.6em]">
-                            <span>Imagem:</span>
-                            <input
-                                type="file"
-                                onChange={handleFile}
-                                className="py-[10px] px-[8px] rounded-sm bg-[#3b3b3b] border border-[#555] text-[#AAA]"
-                            />
-                        </label>
-
-                        {!photoLoading &&                
                             <input
                                 type="submit"
-                                value="Postar"
+                                value="Atualizar"
                                 className="py-[10px] px-[8px] mt-4 text-[1em] rounded-[4px] font-bold opacity-[0.8] text-[#FFF] bg-[#0094f6] cursor-pointer hover:opacity-[1] transition-all"
                             />
-                        }
-                        
-                        {photoLoading &&
-                            <input
-                                type="submit"
-                                value="Aguarde..."
-                                className="py-[10px] px-[8px] mt-4 text-[1em] rounded-[4px] font-bold opacity-[0.8] text-[#FFF] border border-[#555] disabled:cursor-not-allowed disabled:bg-black"
-                                disabled
-                            />
-                        }
-        
-                        {photoError && <Message msg={photoError} type="error" />}
 
-                        {photoMessage && <Message msg={photoMessage} type="success" />}
-                    </form>
-                </div>
+                            <button className="py-[10px] px-[8px] text-[1em] rounded-[4px] font-bold opacity-[0.8] text-[#FFF] border border-[#555]" onClick={handleCancelEdit}>Cancelar edição</button>
+                        </form>
+                    </div>
+
+                    {photoError && <Message msg={photoError} type="error" />}
+
+                    {photoMessage && <Message msg={photoMessage} type="success" />}
+                </>
             )}
 
             <div className="p-1 border border-[#363636]">
@@ -162,7 +229,7 @@ export function Profile() {
                                     <Link to={`/photos/${photo._id}`}>
                                         <BsFillEyeFill />
                                     </Link>
-                                    <BsPencilFill className="cursor-pointer" />
+                                    <BsPencilFill className="cursor-pointer" onClick={() => handleEdit(photo)} />
                                     <BsXLg
                                         onClick={() => handleDelete(photo._id)}
                                         className="cursor-pointer"
