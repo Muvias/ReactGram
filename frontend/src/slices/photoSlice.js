@@ -77,6 +77,32 @@ export const getPhoto = createAsyncThunk(
     },
 );
 
+export const likePhoto = createAsyncThunk(
+    "photo/like",
+    async (id, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token;
+
+        const data = await photoService.likePhoto(id, token);
+
+        return data;
+    },
+);
+
+export const comment = createAsyncThunk(
+    "photo/comment",
+    async (commentData, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token;
+
+        const data = await photoService.comment({ comment: commentData.comment }, commentData.id, token);
+
+        if (data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0]);
+        };
+
+        return data;
+    },
+);
+
 export const photoSlice = createSlice({
     name: "photo",
     initialState,
@@ -92,7 +118,7 @@ export const photoSlice = createSlice({
         }).addCase(publishPhoto.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
-            state.error = false;
+            state.error = null;
             state.photo = action.payload;
             state.photos.unshift(state.photo);
             state.message = "Foto publicada com sucesso";
@@ -106,7 +132,7 @@ export const photoSlice = createSlice({
         }).addCase(getUserPhotos.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
-            state.error = false;
+            state.error = null;
             state.photos = action.payload;
         }).addCase(deletePhoto.pending, (state) => {
             state.loading = true;
@@ -114,7 +140,7 @@ export const photoSlice = createSlice({
         }).addCase(deletePhoto.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
-            state.error = false;
+            state.error = null;
             state.photos = state.photos.filter((photo) => {
                 return photo._id !== action.payload.id;
             });
@@ -129,7 +155,7 @@ export const photoSlice = createSlice({
         }).addCase(updatePhoto.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
-            state.error = false;
+            state.error = null;
             state.photos.map((photo) => {
                 if(photo._id === action.payload.photo._id) {
                     return photo.title = action.payload.photo.title;
@@ -147,8 +173,37 @@ export const photoSlice = createSlice({
         }).addCase(getPhoto.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
-            state.error = false;
+            state.error = null;
             state.photo = action.payload;
+        }).addCase(likePhoto.fulfilled, (state, action) => {
+            state.loading = false;
+            state.success = true;
+            state.error = null;
+
+            if (state.photo.likes) {
+                state.photo.likes.push(action.payload.userId);
+            };
+
+            state.photos.map((photo) => {
+                if(photo._id === action.payload.photoId) {
+                    return photo.likes.push(action.payload.userId);
+                };
+                return photo;
+            });
+
+            state.message = action.payload.message;
+        }).addCase(likePhoto.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        }).addCase(comment.fulfilled, (state, action) => {
+            state.loading = false;
+            state.success = true;
+            state.error = null;
+            state.photo.comments.push(action.payload.comment);
+            state.message = action.payload.message;
+        }).addCase(comment.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
         });
     }
 });

@@ -7,7 +7,6 @@ import { Message } from "../components/Message";
 
 import { profile, resetMessage, updateProfile } from "../slices/userSlice";
 
-
 export function EditProfile() {
     const dispatch = useDispatch();
 

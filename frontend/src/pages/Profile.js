@@ -9,12 +9,14 @@ import { Message } from "../components/Message";
 import { uploads } from "../utils/config";
 
 import { getUserDetails } from "../slices/userSlice";
-import { publishPhoto, resetMessage, getUserPhotos, deletePhoto, updatePhoto } from "../slices/photoSlice";
+import { publishPhoto, getUserPhotos, deletePhoto, updatePhoto } from "../slices/photoSlice";
+import { useResetComponentMessage } from "../hooks/useResetComponentMessage";
 
 export function Profile() {
     const { id } = useParams();
 
     const dispatch = useDispatch();
+    const resetComponentMessage = useResetComponentMessage(dispatch);
 
     const { user, loading } = useSelector((state) => state.user);
     const { user: userAuth } = useSelector((state) => state.auth);
@@ -29,12 +31,6 @@ export function Profile() {
     const [editId, setEditId] = useState("");
     const [editImage, setEditImage] = useState("");
     const [editTitle, setEditTitle] = useState("");
-
-    function resetComponentMessage() {    
-        setTimeout(() => {
-            dispatch(resetMessage())
-        }, 3000);
-    };
 
     useEffect(() => {
         dispatch(getUserDetails(id));
