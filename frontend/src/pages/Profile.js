@@ -107,7 +107,7 @@ export function Profile() {
     };
 
     return (
-        <div className="w-[50%] mx-auto">
+        <div className="w-[50%] mx-auto mt-4">
             <div className="flex flex-wrap items-center p-4 border-b-[1px] border-b-[#363636]">
                 {user.profileImage && (
                     <img
@@ -205,13 +205,13 @@ export function Profile() {
                 </>
             )}
 
-            <div className="p-1 border border-[#363636]">
-                <h2>Fotos publicadas:</h2>
+            <div className="p-1 border border-[#363636] mb-4">
+                <h2 className="ml-4 mt-2 mb-2">Fotos publicadas:</h2>
                 <div className="flex flex-wrap">
                     {photos && photos.map((photo) => (
                         <div
                             key={photo._id}
-                            className="w-[32%] m-[0.3%]"
+                            className="w-[29%] m-[0.3%] mx-4 mb-2"
                         >
                             {photo.image && (
                                 <img
@@ -237,7 +237,7 @@ export function Profile() {
                         </div>
                     ))}
 
-                    {photos.length === 0 && <p>Ainda não há fotos publicadas</p>}
+                    {photos.length === 0 && <p className="mx-auto my-4">Ainda não há fotos publicadas</p>}
                 </div>
             </div>
         </div>

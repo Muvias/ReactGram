@@ -60,10 +60,10 @@ export function Photo() {
                 {error && <Message msg={error} type="error" />}
                 {message && <Message msg={message} type="success" />}
             </div>
-            <div>
+            <div className="mt-4">
                 {photo.comments && (
                     <>
-                        <h2>Comentários: ({photo.comments.length})</h2>
+                        <h2 className="mb-4">Comentários: ({photo.comments.length})</h2>
 
                         <form
                         onSubmit={handleComment}
