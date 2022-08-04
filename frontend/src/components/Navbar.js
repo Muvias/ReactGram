@@ -8,6 +8,8 @@ import { useAuth } from "../hooks/useAuth";
 import { logout, reset } from "../slices/authSlice";
 
 export function Navbar() {
+    const [search, setSearch] = useState("");
+
     const { auth } = useAuth();
     const { user } = useSelector((state) => state.auth);
 
@@ -21,14 +23,27 @@ export function Navbar() {
         navigate("/login");
     };
 
+    function handleSearch(e) {
+        e.preventDefault();
+
+        if (search) {
+            return navigate(`/search?q=${search}`);
+        };
+    };
+
     return (
         <nav className="flex justify-between items-center py-[0.4em] px-[1em] bg-black border-b-[1px] border-solid border-[#363636]">
             <Link to="/">ReactGram</Link>
-            <form className="relative w-[20%] items-center justify-center">
+            <form
+                onSubmit={handleSearch}
+                className="relative w-[20%] items-center justify-center"
+            >
                 <BsSearch className="absolute top-[15px] left-[9px]" />
                 <input
                     type="text"
                     placeholder="pesquisar"
+                    value={search || ""}
+                    onChange={(e) => setSearch(e.target.value)}
                     className="w-[100%] pl-[2.5em] py-[10px] pr-[8px] bg-[#3b3b3b] rounded-sm border-solid placeholder:text-[#AAA]"
                 />
             </form>

@@ -27,6 +27,10 @@ export function Home() {
         resetMessage();
     };
 
+    if (loading) {
+        return <p>Caregando...</p>
+    };
+
     return (
         <div className="flex flex-col w-[50%] mx-auto mt-8">
             {photos && photos.map((photo) => 
