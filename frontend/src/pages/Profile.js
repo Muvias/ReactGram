@@ -205,13 +205,13 @@ export function Profile() {
                 </>
             )}
 
-            <div className="p-1 border border-[#363636] mb-4">
-                <h2 className="ml-4 mt-2 mb-2">Fotos publicadas:</h2>
-                <div className="flex flex-wrap">
+            <div className="p-4 border border-[#363636] mb-4">
+                <h2 className="mb-2">Fotos publicadas:</h2>
+                <div className="grid grid-cols-3 gap-4">
                     {photos && photos.map((photo) => (
                         <div
                             key={photo._id}
-                            className="w-[29%] m-[0.3%] mx-4 mb-2"
+                            className="mb-2"
                         >
                             {photo.image && (
                                 <img
@@ -232,7 +232,7 @@ export function Profile() {
                                     />
                                 </div>
                             ) : (
-                                <Link to={`/photos/${photo._id}`}>Ver</Link>
+                                <Link to={`/photos/${photo._id}`} className="">Ver mais</Link>
                             )}
                         </div>
                     ))}

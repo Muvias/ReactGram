@@ -26,6 +26,10 @@ export function Navbar() {
     function handleSearch(e) {
         e.preventDefault();
 
+        if (search === "") {
+            navigate("/")
+        };
+
         if (search) {
             return navigate(`/search?q=${search}`);
         };
@@ -44,6 +48,7 @@ export function Navbar() {
                     placeholder="pesquisar"
                     value={search || ""}
                     onChange={(e) => setSearch(e.target.value)}
+                    onClick={() => setSearch("")}
                     className="w-[100%] pl-[2.5em] py-[10px] pr-[8px] bg-[#3b3b3b] rounded-sm border-solid placeholder:text-[#AAA]"
                 />
             </form>
