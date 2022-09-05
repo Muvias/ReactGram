@@ -27,3 +27,7 @@ Projeto completo com funcionalidades tais quais:
   <li>TailwindCSS</li>
   <li>Redux Toolkit</li>
 </ul>
+
+## Preview:
+
+![Screenshot_1](https://user-images.githubusercontent.com/52111824/188483410-6b37c1da-d0f4-42ce-9f1b-2006cccf5dbf.png)
